@@ -1,14 +1,30 @@
 $(document).ready(function()    {
 
+    var key = "60e01cf8819d6fe551736d0879242403";
+    var lon = "";
+    var lat = "";
+
+    function getCoord() {
+        $.ajax({
+            url:forecastURL,
+            method: "GET"
+        }) .then(function(response) {
+            lon = response.coord.lon;
+            lat = response.coord.lat;
+            return;
+        })
+    }
+
 
 
     $(".searchBtn").on("click", function()  {
         var city = $("#search").val();
-        var key = $("#key").val();
+        
         
         queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
+        console.log(queryURL);
         
-        //API Call
+        //API Call to get the current forecast
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -25,7 +41,6 @@ $(document).ready(function()    {
               var wind = response.wind.speed;
 
               var uvInd = '';
-              
 
             $("#citydate").text(city.toString() + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
             $("#temp").text("Temperature: " + temp.toString() + " F");
