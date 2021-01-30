@@ -24,7 +24,7 @@ $(document).ready(function()    {
 
               var wind = response.wind.speed;
 
-              var uvInd = response.
+              var uvInd = '';
               
 
             $("#citydate").text(city.toString() + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
