@@ -111,13 +111,13 @@ $(document).ready(function()    {
                         method: "GET"
                     }) .then(function(response) {
                             forArr = response.daily;
+                            $(".forecast").empty();
                             for (var i = 0; i < 5; i++) {
                                 var ms = forArr[i].dt * 1000;
                                 var dt = new Date(ms);
                                 var dateObj = dt.toLocaleString("en-US", {dateStyle: "short"});
                                 iconURL = "https://openweathermap.org/img/wn/" + forArr[i].weather[0].icon + "@2x.png";                       
                                 var temp = forArr[i].temp.day;
-                                console.log(temp);
                                 var humidity = forArr[i].humidity;
                                 var div = $("<div>");
                                 var span = $("<span>");
