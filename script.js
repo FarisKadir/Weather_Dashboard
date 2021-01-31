@@ -155,9 +155,14 @@ $(document).ready(function()    {
     $(".searchBtn").on("click", function()  {
         city = $("#search").val();
         city = city.charAt(0).toUpperCase() + city.toLowerCase().slice(1);
-        weather(city);
-        storeHistory(city);
-        forecast(city);
+        if (!city)  {
+            $("#search").val("Please enter a city!");
+        }
+        else if (city)  {
+            weather(city);
+            storeHistory(city);
+            forecast(city);
+        };
     });
 
 
