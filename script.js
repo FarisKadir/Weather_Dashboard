@@ -1,43 +1,61 @@
 $(document).ready(function()    {
+    var history = JSON.parse(localStorage.getItem("Search History"));
     var key = "60e01cf8819d6fe551736d0879242403";
-    var history = [];
     var ul = $(".list-group");
     
 
-    //Function to get retrieve, store, and display recent search history
-    function storeHistory(city)    {
+    //Create buttons for history
+    function btnCreate(arr) {
         $(".list-group").empty();
-        existHist = JSON.parse(localStorage.getItem("Search History"));
-        if (existHist == null) {
+        
+        arr.forEach(function(item)   {
+            var li = $("<li>");
+            var btn = $("<button>");
+            li.addClass("card");
+            btn.addClass("btn btn-outline-dark text-left");
+            btn.attr("onclick","weather('" + item + "')");
+            btn.text(item);
+            li.append(btn);
+            ul.prepend(li);
+        })
+    }
+
+
+    //Store history
+    function storeHistory(city)    {
+    
+        if (history == null) {
+            history = [];
             history.push(city);
             localStorage.setItem("Search History", JSON.stringify(history));
+            btnCreate(history);
         }
-        else if (existHist.length < 8)   {
+        else if (history.length < 8)   {
             history.push(city);
             localStorage.setItem("Search History", JSON.stringify(history));
+            btnCreate(history);
         }
         else    {
             history.splice(0,1);
             history.push(city);
             localStorage.setItem("Search History", JSON.stringify(history));
-        }
-            console.log(history);
-            history.forEach(function(item)   {
-                var li = $("<li>");
-                var btn = $("<button>");
-                li.addClass("card");
-                btn.addClass("btn btn-outline-dark text-left hist");
-                btn.attr("id", item);
-                btn.attr("value", item);
-                btn.text(item);
-                li.append(btn);
-                ul.prepend(li);
-            })
-    };
-    
+            btnCreate(history);
+        };
 
-    //Function for retrieving the latitude and longitude
-    function getForecast(city) {
+        history = JSON.parse(localStorage.getItem("Search History"));
+        return history;
+    };
+
+
+
+
+
+    //Function to get retrieve, store, and display recent search history
+   
+   
+
+     //Function for retrieving the latitude and longitude
+     function weather(city) {
         //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
         var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
         $.ajax({
@@ -57,33 +75,24 @@ $(document).ready(function()    {
                     uvInd = response.current.uvi;
                     $("#citydate").text(city + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
                     $("#temp").text("Temperature: " + temp.toString() + " F");
-                    $("#humidity").text("Humidity: " + humidity.toString());
-                    $("#wind").text("Wind: " + wind.toString());
+                    $("#humidity").text("Humidity: " + humidity.toString() + "%");
+                    $("#wind").text("Wind: " + wind.toString() + " MPH");
                     $("#uv").text("UV Index: " + uvInd);
             })
         });
     };
 
+    
+    
+   
+
 
     $(".searchBtn").on("click", function()  {
-        console.log("I clicked the search button");
         city = $("#search").val();
         city = city.charAt(0).toUpperCase() + city.toLowerCase().slice(1);
-        getForecast(city);
+        weather(city);
         storeHistory(city);
     });
-
-    $(".hist").on("click", function()   {
-        console.log("I clicked history");
-        city = $(this).html();
-        city = city.charAt(0).toUpperCase() + city.toLowerCase().slice(1);
-        getForecast(city);
-        storeHistory(city);
-    });
-    
-
-
-
 
 
 
