@@ -47,15 +47,8 @@ $(document).ready(function()    {
     };
 
 
-
-
-
-    //Function to get retrieve, store, and display recent search history
-   
-   
-
      //Function for retrieving the latitude and longitude
-     function weather(city) {
+    function weather(city) {
         //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
         var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
         $.ajax({
@@ -69,15 +62,33 @@ $(document).ready(function()    {
                 url: oneCallURL,
                 method: "GET"
             }) .then(function(response) {
+                    
                     temp = response.current.temp;
                     humidity = response.current.humidity;
                     wind = response.current.wind_speed;
                     uvInd = response.current.uvi;
-                    $("#citydate").text(city + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
+                    iconURL = "http://openweathermap.org/img/wn/" + response.current.weather[0].icon + "@2x.png";
+                    var img = $("<img>");
+                    img.attr({src: iconURL, alt: response.current.weather[0].description});
+                    
+                    $("#city").text(city + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
+                    $("#city").append(img);
+                    $("#currentIcon").attr("src", iconURL);
                     $("#temp").text("Temperature: " + temp.toString() + " F");
                     $("#humidity").text("Humidity: " + humidity.toString() + "%");
-                    $("#wind").text("Wind: " + wind.toString() + " MPH");
-                    $("#uv").text("UV Index: " + uvInd);
+                    $("#wind").text("Wind Speed: " + wind.toString() + " MPH");
+                    $("#uv").text( uvInd);
+                    $("#uv").attr("display", "inline-block");
+                    
+                    if (uvInd >= 0 && uvInd < 3) {
+                        $("#uv").addClass("bg-success p-1");
+                    }
+                    else if (uvInd >= 3 && uvInd <=7 )  {
+                        $("#uv").addClass("bg-warning p-1");
+                    }
+                    else{
+                        $("#uv").addClass("bg-dange p-1");
+                    };
             })
         });
     };

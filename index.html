@@ -30,11 +30,12 @@
             <div class="container-fluid col-8 bg-warning p-0 m-2">
                 <div class="row card m-0 p-2">
                     <div class="">
-                        <h2 class='m-1 mb-3' id="citydate"></h2>
+                        <h2 class='m-1 mb-3' id="city"></h2>
                         <p id="temp">Temp: </p>
                         <p id="humidity">Humidity: </p>
                         <p id="wind">Wind Speed: </p>
-                        <p id="uv">UV Index: </p>
+                        <p>UV Index: <span id="uv"></span></p>
+                        <!-- sa<p>UV Index: </p> <span id="uv"></span> -->
                     </div>
                 </div>
                 <div class="row"><h5>5-Day Forecast</h5>
@@ -72,33 +73,55 @@
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
   crossorigin="anonymous"></script>
     <script src="script.js"></script>
-    <script>function weather(city) {
+
+    <!-- Function included here otherwise the historical buttons won't work -->
+    <script>
         var key = "60e01cf8819d6fe551736d0879242403";
-        //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
-        var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
-        $.ajax({
-            url: forecastURL,
-            method: "GET"
-        }) .then(function(response) {
-            var oneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&units=imperial&appid=" + key;
-            var country = response.sys.country;
-            //Calls the OneCall endpoint to retrieve all of the current weather and 5 day
+        function weather(city) {
+            //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
+            var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
             $.ajax({
-                url: oneCallURL,
+                url: forecastURL,
                 method: "GET"
             }) .then(function(response) {
-                    temp = response.current.temp;
-                    humidity = response.current.humidity;
-                    wind = response.current.wind_speed;
-                    uvInd = response.current.uvi;
-                    $("#citydate").text(city + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
-                    $("#temp").text("Temperature: " + temp.toString() + " F");
-                    $("#humidity").text("Humidity: " + humidity.toString() + "%");
-                    $("#wind").text("Wind: " + wind.toString() + " MPH");
-                    $("#uv").text("UV Index: " + uvInd);
-            })
-        });
-    };</script>
+                var oneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&units=imperial&appid=" + key;
+                var country = response.sys.country;
+                //Calls the OneCall endpoint to retrieve all of the current weather and 5 day
+                $.ajax({
+                    url: oneCallURL,
+                    method: "GET"
+                }) .then(function(response) {
+                        
+                        temp = response.current.temp;
+                        humidity = response.current.humidity;
+                        wind = response.current.wind_speed;
+                        uvInd = response.current.uvi;
+                        iconURL = "http://openweathermap.org/img/wn/" + response.current.weather[0].icon + "@2x.png";
+                        var img = $("<img>");
+                        img.attr({src: iconURL, alt: response.current.weather[0].description});
+                        
+                        $("#city").text(city + ", " + country + "  (" + moment().format("MM/DD/YYYY") + ")");
+                        $("#city").append(img);
+                        $("#currentIcon").attr("src", iconURL);
+                        $("#temp").text("Temperature: " + temp.toString() + " F");
+                        $("#humidity").text("Humidity: " + humidity.toString() + "%");
+                        $("#wind").text("Wind Speed: " + wind.toString() + " MPH");
+                        $("#uv").text( uvInd);
+                        $("#uv").attr("display", "inline-block");
+                        
+                        if (uvInd >= 0 && uvInd < 3) {
+                            $("#uv").addClass("bg-success p-1");
+                        }
+                        else if (uvInd >= 3 && uvInd <=7 )  {
+                            $("#uv").addClass("bg-warning p-1");
+                        }
+                        else{
+                            $("#uv").addClass("bg-dange p-1");
+                        };
+                })
+            });
+        };
+    </script>
     
 </body>
 </html>
