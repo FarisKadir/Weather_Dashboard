@@ -16,7 +16,7 @@ $(document).ready(function()    {
             var btn = $("<button>");
             li.addClass("card");
             btn.addClass("btn btn-outline-dark text-left");
-            btn.attr("onclick","weather('" + item + "')");
+            btn.attr("onclick","clickWeather('" + item + "')");
             btn.text(item);
             li.append(btn);
             ul.prepend(li);
