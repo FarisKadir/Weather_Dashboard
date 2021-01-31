@@ -1,7 +1,9 @@
 $(document).ready(function()    {
 
-
+    //retrieves any local stored searches 
     var history = JSON.parse(localStorage.getItem("Search History"));
+
+
     var key = "60e01cf8819d6fe551736d0879242403";
     var ul = $(".list-group");
     
@@ -65,7 +67,6 @@ $(document).ready(function()    {
                 url: oneCallURL,
                 method: "GET"
             }) .then(function(response) {
-                    
                     temp = response.current.temp;
                     humidity = response.current.humidity;
                     wind = response.current.wind_speed;
@@ -141,8 +142,8 @@ $(document).ready(function()    {
     }
 
     
-    
-   
+//creates buttons for any searches that existed.
+   btnCreate(history);
 
     //On click event for when the search button is clicked.
     $(".searchBtn").on("click", function()  {

@@ -89,8 +89,24 @@ function forecast(city) {
             });
         }
 
+
+
+
+
+//Function that loads the current weather and 5 day forecast for the last searched item
+
+function loadLast() {
+    var history = JSON.parse(localStorage.getItem("Search History"));
+    lastCity = history[history.length - 1];
+    weather(lastCity);
+    forecast(lastCity);
+}
+
 //On click function for the history buttons
     function clickWeather(city) {
         weather(city);
         forecast(city);
     };
+
+//Loads the last searched item when the page renders
+loadLast();
