@@ -1,7 +1,10 @@
 $(document).ready(function()    {
+
+
     var history = JSON.parse(localStorage.getItem("Search History"));
     var key = "60e01cf8819d6fe551736d0879242403";
     var ul = $(".list-group");
+    
     
 
     //Create buttons for history
@@ -93,36 +96,48 @@ $(document).ready(function()    {
         });
     };
 
-    function forecast(city)    {
-        var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
+    //Function for the 5 day forecast
+    function forecast(city) {
+        var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
         $.ajax({
-            url: forecastURL,
+            url: weatherURL,
             method: "GET"
         }) .then(function(response) {
-            forArr = response.list;
-            console.log(forArr);
-        
-                var milliseconds = currentVal.dt * 1000;
-                var dateObj = new Date(milliseconds);
-                var date = dateObj.toLocaleString;
-                console.log(date);
-                var div = $("<div>");
-                var span = $("<span>");
-                var h = $("<h2>");
-                var p = $("<p>");
-                var img = $("<img>");
-
-
-            response.list.forEach(function(currentVal)   {
-                
-                div.addClass("card w-25");
-                span.addClass("card-body bg-primary text-white");
-                h.addClass("card-title");
-                p.addClass("card-text");
-                $(".forecast").append(div);
-            })
+                var oneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&exclude=minutely,hourly,alerts&units=imperial&appid=" + key;
+                var country = response.sys.country;
+                    //Calls the OneCall endpoint to retrieve all of the current weather and 5 day
+                    $.ajax({
+                        url: oneCallURL,
+                        method: "GET"
+                    }) .then(function(response) {
+                            forArr = response.daily;
+                            for (var i = 0; i < 5; i++) {
+                                var ms = forArr[i].dt * 1000;
+                                var dt = new Date(ms);
+                                var dateObj = dt.toLocaleString("en-US", {dateStyle: "short"});
+                                iconURL = "https://openweathermap.org/img/wn/" + forArr[i].weather[0].icon + "@2x.png";                       
+                                var temp = forArr[i].temp.day;
+                                console.log(temp);
+                                var humidity = forArr[i].humidity;
+                                var div = $("<div>");
+                                var span = $("<span>");
+                                var h = $("<h2>");
+                                var p = $("<p>");
+                                var img = $("<img>");
+                                div.addClass("card w-25");
+                                span.addClass("card-body bg-primary text-white");
+                                h.addClass("card-title");
+                                h.text(dateObj);
+                                p.addClass("card-text");
+                                p.text("Temp: " + temp + " F" + "\nHumidity: " + humidity);
+                                img.attr("src", iconURL);
+                                $(".forecast").append(div);
+                                div.append(span);
+                                span.append(h, img, p);
+                            }
+                    });
         });
-    };
+    }
 
     
     
@@ -139,4 +154,4 @@ $(document).ready(function()    {
 
 
 
-}); //End of document ready   
+}); //End of document ready 
