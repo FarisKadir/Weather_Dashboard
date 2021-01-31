@@ -27,10 +27,10 @@
                 <ul class="list-group list-group-flush">      
                 </ul>
             </div>
-            <div class="container-fluid col-8 bg-warning p-0 m-2">
+            <div class="container-fluid col-8 p-0 m-2 mt-1">
                 <div class="row card m-0 p-2">
                     <div class="">
-                        <h2 class='m-1 mb-3' id="city"></h2>
+                        <h2 class='m-1 mb-3' id="city">City Name</h2>
                         <p id="temp">Temp: </p>
                         <p id="humidity">Humidity: </p>
                         <p id="wind">Wind Speed: </p>
@@ -38,16 +38,19 @@
                         <!-- sa<p>UV Index: </p> <span id="uv"></span> -->
                     </div>
                 </div>
-                <div class="row"><h5>5-Day Forecast</h5>
-                <!-- <div class="row m-1">
-                    <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">Card title</h5>
-                          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                          <a href="#" class="btn btn-primary">Button</a>
-                        </div>
-                    </div>   
-                    <div class="card">
+                <div class="row">
+                    <h5 class="m-2 ml-3">5-Day Forecast</h5>
+                </div>
+                <div class="row m-1 forecast">
+                    <div class="card w-25">
+                        <span class="card-body bg-primary text-white">
+                          <h5 class="card-title">08/16/2021</h5>
+                          <img>
+                          <p class="card-text" id="temp5">Temp:</p>
+                          <p class="card-text" id="humidity5">Humidity:</p>
+                        </span>
+                    </div> 
+                    <!-- <div class="card">
                         <div class="card-body">
                           <h5 class="card-title">Card title</h5>
                           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
@@ -60,7 +63,7 @@
                           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                           <a href="#" class="btn btn-primary">Button</a>
                         </div>
-                    </div>   -->
+                    </div> -->
                 </div>
         </div>
     </main>
@@ -79,9 +82,9 @@
         var key = "60e01cf8819d6fe551736d0879242403";
         function weather(city) {
             //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
-            var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
+            var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
             $.ajax({
-                url: forecastURL,
+                url: weatherURL,
                 method: "GET"
             }) .then(function(response) {
                 var oneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&units=imperial&appid=" + key;

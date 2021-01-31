@@ -50,9 +50,9 @@ $(document).ready(function()    {
      //Function for retrieving the latitude and longitude
     function weather(city) {
         //Calls the weather api endpoint. This is only used to retrieve the lat, lon, and country.
-        var forecastURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
+        var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + key;
         $.ajax({
-            url: forecastURL,
+            url: weatherURL,
             method: "GET"
         }) .then(function(response) {
             var oneCallURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&units=imperial&appid=" + key;
@@ -93,6 +93,37 @@ $(document).ready(function()    {
         });
     };
 
+    function forecast(city)    {
+        var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + key;
+        $.ajax({
+            url: forecastURL,
+            method: "GET"
+        }) .then(function(response) {
+            forArr = response.list;
+            console.log(forArr);
+        
+                var milliseconds = currentVal.dt * 1000;
+                var dateObj = new Date(milliseconds);
+                var date = dateObj.toLocaleString;
+                console.log(date);
+                var div = $("<div>");
+                var span = $("<span>");
+                var h = $("<h2>");
+                var p = $("<p>");
+                var img = $("<img>");
+
+
+            response.list.forEach(function(currentVal)   {
+                
+                div.addClass("card w-25");
+                span.addClass("card-body bg-primary text-white");
+                h.addClass("card-title");
+                p.addClass("card-text");
+                $(".forecast").append(div);
+            })
+        });
+    };
+
     
     
    
@@ -103,6 +134,7 @@ $(document).ready(function()    {
         city = city.charAt(0).toUpperCase() + city.toLowerCase().slice(1);
         weather(city);
         storeHistory(city);
+        forecast(city);
     });
 
 
