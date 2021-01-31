@@ -99,7 +99,7 @@
                         humidity = response.current.humidity;
                         wind = response.current.wind_speed;
                         uvInd = response.current.uvi;
-                        iconURL = "http://openweathermap.org/img/wn/" + response.current.weather[0].icon + "@2x.png";
+                        iconURL = "https://openweathermap.org/img/wn/" + response.current.weather[0].icon + "@2x.png";
                         var img = $("<img>");
                         img.attr({src: iconURL, alt: response.current.weather[0].description});
                         
