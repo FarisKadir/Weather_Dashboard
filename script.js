@@ -1,7 +1,10 @@
 $(document).ready(function()    {
 
     //retrieves any local stored searches 
-    var history = JSON.parse(localStorage.getItem("Search History"));
+    var hist = [];
+    if (localStorage.getItem("Search History") !== null)    {
+        hist = JSON.parse(localStorage.getItem("Search History"));
+    }
 
 
     var key = "60e01cf8819d6fe551736d0879242403";
@@ -29,26 +32,26 @@ $(document).ready(function()    {
     //Store history
     function storeHistory(city)    {
     
-        if (history == null) {
-            history = [];
-            history.push(city);
-            localStorage.setItem("Search History", JSON.stringify(history));
-            btnCreate(history);
+        if (hist == null) {
+            hist = [];
+            hist.push(city);
+            localStorage.setItem("Search History", JSON.stringify(hist));
+            btnCreate(hist);
         }
-        else if (history.length < 8)   {
-            history.push(city);
-            localStorage.setItem("Search History", JSON.stringify(history));
-            btnCreate(history);
+        else if (hist.length < 8)   {
+            hist.push(city);
+            localStorage.setItem("Search History", JSON.stringify(hist));
+            btnCreate(hist);
         }
         else    {
-            history.splice(0,1);
-            history.push(city);
-            localStorage.setItem("Search History", JSON.stringify(history));
-            btnCreate(history);
+            hist.splice(0,1);
+            hist.push(city);
+            localStorage.setItem("Search History", JSON.stringify(hist));
+            btnCreate(hist);
         };
 
-        history = JSON.parse(localStorage.getItem("Search History"));
-        return history;
+        hist = JSON.parse(localStorage.getItem("Search History"));
+        return hist;
     };
 
 
@@ -142,8 +145,11 @@ $(document).ready(function()    {
     }
 
     
-//creates buttons for any searches that existed.
-   btnCreate(history);
+    //creates buttons for any searches that existed.
+    if (hist != null || hist.length !=0)    {
+        btnCreate(hist);
+    };
+        
 
     //On click event for when the search button is clicked.
     $(".searchBtn").on("click", function()  {
