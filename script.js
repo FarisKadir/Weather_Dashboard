@@ -112,6 +112,7 @@ $(document).ready(function()    {
                     }) .then(function(response) {
                             forArr = response.daily;
                             $(".forecast").empty();
+                            //Creates the cards that contain the date, weather condition icon, temp, and humidity for the next 5 days
                             for (var i = 0; i < 5; i++) {
                                 var ms = forArr[i].dt * 1000;
                                 var dt = new Date(ms);
@@ -143,7 +144,7 @@ $(document).ready(function()    {
     
    
 
-
+    //On click event for when the search button is clicked.
     $(".searchBtn").on("click", function()  {
         city = $("#search").val();
         city = city.charAt(0).toUpperCase() + city.toLowerCase().slice(1);
