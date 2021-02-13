@@ -32,6 +32,8 @@ THEN I am presented with the last searched city forecast
 
 The following image demonstrates the application functionality:
 
+![weather_dashboard_demo](./images/mockup1.png)
+
 ![weather dashboard demo](./images/mockup.png)
 
 ## Link To the Deployed Site
