@@ -2,7 +2,7 @@
 
 ## Description
 
-I created this dashboard so that I can demonstrate using an a server side API.
+I created this dashboard to demonstrate using Ajax to make api calls. This app will provide you the current weather, and 5 day forecase of any city that you enter. The city can be any city in the world, the app will also display the country the city is located in. It will also save up to 8 searches in history, which can be recalled by click on the appropriate button for the city.
 
 ## User Story
 
@@ -33,3 +33,7 @@ THEN I am presented with the last searched city forecast
 The following image demonstrates the application functionality:
 
 ![weather dashboard demo](./images/mockup.png)
+
+## Link To the Deployed Site
+
+https://fariskadir.github.io/Weather_Dashboard/
